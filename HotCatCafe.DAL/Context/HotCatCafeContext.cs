@@ -1,4 +1,5 @@
-﻿using HotCatCafe.Model.Entities;
+﻿using HotCatCafe.DAL.Configurations;
+using HotCatCafe.Model.Entities;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
@@ -20,6 +21,12 @@ namespace HotCatCafe.DAL.Context
             base.OnConfiguring(optionsBuilder);
         }
 
+        protected override void OnModelCreating(ModelBuilder builder)
+        {
+            builder.ApplyConfiguration(new CategoryConfiguration());
+            builder.ApplyConfiguration(new ProductConfiguration());
+            base.OnModelCreating(builder);
+        }
 
     }
 }

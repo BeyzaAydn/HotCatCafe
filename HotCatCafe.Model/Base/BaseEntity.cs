@@ -13,6 +13,7 @@ namespace HotCatCafe.Model.Base
             CreatedDate = DateTime.Now;
             CreatedComputerName=System.Environment.MachineName;
             CreatedIpAdress = System.Net.Sockets.AddressFamily.InterNetwork;//Bu bize System.Net.Sockets namespacei içinde bulunan AddressFamily enumı içinde tanımlanan InterNetwork değeri  kullanılarak bilgisayarın IPv4 adresini almamızı sağlayacaktır.
+            MasterId=Guid.NewGuid();
         }
 
         public int ID { get ; set ; }

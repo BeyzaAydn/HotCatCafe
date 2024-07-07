@@ -14,8 +14,8 @@ namespace HotCatCafe.Model.Interfaces
         public AddressFamily  CreatedIpAdress{ get; set; }
 
         public DateTime UpdatedDate { get; set; }
-        public string UpdatedComputerName { get;}
-        public string UpdatedIpAdress { get; set; }
+        public string? UpdatedComputerName { get;}
+        public string? UpdatedIpAdress { get; set; }
 
        
         public DataStatus Status { get; set; }  //Verinin statüsünü enum yapısı içinde belirleyerek bu yapıyı property içinde kullandık.(eklendi,silindi,güncellendi,aktif ve pasif enumları kullanıldı.)
