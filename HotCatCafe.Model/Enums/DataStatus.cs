@@ -5,7 +5,6 @@
         Inserted,
         Deleted,
         Updated,
-        IsActive,
-        InActive
+        
     }
 }

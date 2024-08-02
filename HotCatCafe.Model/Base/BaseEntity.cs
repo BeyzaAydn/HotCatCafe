@@ -9,10 +9,10 @@ namespace HotCatCafe.Model.Base
         public BaseEntity() 
         {
             Status=DataStatus.Inserted;
-            Status=DataStatus.IsActive;
+            Active=Active.Isactive;
             CreatedDate = DateTime.Now;
             CreatedComputerName=System.Environment.MachineName;
-            CreatedIpAdress = System.Net.Sockets.AddressFamily.InterNetwork;//Bu bize System.Net.Sockets namespacei içinde bulunan AddressFamily enumı içinde tanımlanan InterNetwork değeri  kullanılarak bilgisayarın IPv4 adresini almamızı sağlayacaktır.
+            CreatedIpAdress = System.Net.Sockets.AddressFamily.InterNetwork;//System.Net.Sockets namespacei içinde bulunan AddressFamily enumı içinde tanımlanan InterNetwork değeri  kullanılarak bilgisayarın IPv4 adresinin alınması sağlanacaktır.
             MasterId=Guid.NewGuid();
         }
 
@@ -28,5 +28,7 @@ namespace HotCatCafe.Model.Base
 
         public string? UpdatedIpAdress { get ; set ; }
         public DataStatus Status { get ; set ; }
+
+        public Active Active { get ; set ; }
     }
 }

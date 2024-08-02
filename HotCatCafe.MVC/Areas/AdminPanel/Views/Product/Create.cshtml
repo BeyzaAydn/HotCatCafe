@@ -1,0 +1,34 @@
+﻿@model HotCatCafe.BLL.ViewModels.ProductViewModels.ProductViewModel
+@{
+    ViewData["Title"] = "Create";
+    Layout = "~/Areas/AdminPanel/Views/Shared/_AdminPanelLayout.cshtml";
+}
+
+<form method="post" enctype="multipart/form-data">
+    <div>
+        <label asp-for="ProductName"></label>
+        <input class="form-control" type="text" asp-for="ProductName" />
+    </div>
+    <div>
+        <label asp-for="UnitPrice"></label>
+        <input class="form-control" type="number" asp-for="UnitPrice" />
+    </div>
+    <div>
+        <label asp-for="UnitInStock"></label>
+        <input class="form-control" type="number" asp-for="UnitInStock" />
+    </div>
+    <div>
+        <!--Burada kullanıcının seçim yapması için bir select list oluşturulmuştur.-->
+        <select class="form-control" asp-items="@ViewBag.CategoryListItem" asp-for="CategoryId">
+            <option selected="" disabled>Select Category</option>
+        </select>
+
+
+    </div>
+
+    <div>
+        <input class="form-control" type="file" name="productimage" />
+    </div>
+ 
+    <button class="btn btn-success" type="submit">Oluştur</button>
+</form>

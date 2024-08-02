@@ -17,7 +17,7 @@ namespace HotCatCafe.DAL.Configurations
 
         public List<Category> SeedCategoryData() 
         {
-            var categoryFaker = new Faker<Category>("tr")
+            var categoryFaker = new Faker<Category>("en")
                .RuleFor(c => c.CategoryName, f => f.Commerce.Categories(1).First())
                .RuleFor(c => c.Description, f => f.Lorem.Sentence());
             List<Category> categories=categoryFaker.Generate(3);

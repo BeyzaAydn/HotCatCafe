@@ -1,0 +1,71 @@
+﻿@model List<CategoryListViewModel>
+@{
+    ViewData["Title"] = "Passive";
+    Layout = "~/Areas/AdminPanel/Views/Shared/_AdminPanelLayout.cshtml";
+}
+
+<div class="mb-2">
+    <table class="table table-hover text-nowrap">
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>Category Name</th>
+                <th>Description</th>
+                <th>Status</th>
+                <th>Is Active</th>
+                <th></th>
+                <th>
+                    <a href="/AdminPanel/Category/Create" class="btn btn-dark btn-md">Yeni Kategori</a>
+                    <a href="/AdminPanel/Category/Active" class="btn btn-dark btn-md">Aktif Kategoriler</a>
+                    <a href="/AdminPanel/Category/Passive" class="btn btn-dark btn-md">Pasif Kategoriler</a>
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@item.Id</td>
+                    <td>@item.CategoryName</td>
+                    <td>@item.Description</td>
+                    <td>
+                        @switch (item.Status)
+                        {
+                            case HotCatCafe.Model.Enums.DataStatus.Inserted:
+                                <span>Eklenmiş</span>
+                                break;
+                            case HotCatCafe.Model.Enums.DataStatus.Updated:
+                                <span>Güncellenmiş</span>
+                                break;
+                            case HotCatCafe.Model.Enums.DataStatus.Deleted:
+                                <span>Silinmiş</span>
+                                break;
+
+                        }
+                    </td>
+                    <td>
+                        @switch (item.Active)
+                        {
+                            case HotCatCafe.Model.Enums.Active.Isactive:
+                                <span>Aktif</span>
+                                break;
+                            case HotCatCafe.Model.Enums.Active.Inactive:
+                                <span>Pasif</span>
+                                break;
+
+
+                        }
+                    </td>
+                    <td>
+                        <a href="~/AdminPanel/Category/Update/@item.Id" class="btn btn-success btn-sm">Update</a>
+                        <a href="~/AdminPanel/Category/Details/@item.Id" class="btn btn-primary btn-sm">Details</a>
+                    </td>
+                </tr>
+
+            }
+
+        </tbody>
+    </table>
+</div>
+

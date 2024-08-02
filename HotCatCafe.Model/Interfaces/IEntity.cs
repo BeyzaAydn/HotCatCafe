@@ -18,7 +18,8 @@ namespace HotCatCafe.Model.Interfaces
         public string? UpdatedIpAdress { get; set; }
 
        
-        public DataStatus Status { get; set; }  //Verinin statüsünü enum yapısı içinde belirleyerek bu yapıyı property içinde kullandık.(eklendi,silindi,güncellendi,aktif ve pasif enumları kullanıldı.)
+        public DataStatus Status { get; set; }  //Verinin statüsünü enum yapısı içinde belirleyerek bu yapıyı property içinde kullandık.(eklendi,silindi,güncellendi enumları kullanıldı.)
+        public Active Active { get; set; }
 
     }
 }

@@ -1,0 +1,20 @@
+﻿@model HotCatCafe.BLL.ViewModels.CategoryViewModels.CategoryViewModel
+@{
+    ViewData["Title"] = "Create";
+    Layout = "~/Areas/AdminPanel/Views/Shared/_AdminPanelLayout.cshtml";
+}
+
+<form method="post">
+    
+        <div>
+            <label asp-for="CategoryName"></label> @* değeri gösterir *@
+            <input type="text"  asp-for="CategoryName" > @* değeri içine alır *@
+        </div>
+
+    <div>
+        <label asp-for="Description"></label>
+        <input type="text" asp-for="Description">
+    </div>
+        
+   <button type="submit">Oluştur</button>
+</form>

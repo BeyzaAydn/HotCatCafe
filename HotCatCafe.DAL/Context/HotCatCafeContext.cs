@@ -3,10 +3,13 @@ using HotCatCafe.Model.Entities;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
+
 namespace HotCatCafe.DAL.Context
 {
    public class HotCatCafeContext:IdentityDbContext<AppUser,AppUserRole,Guid>
     {
+
+        public HotCatCafeContext(DbContextOptions<HotCatCafeContext> options):base(options) { }
         //DbSets
         //Category DbSet
         public DbSet<Category> Categories { get; set; }
@@ -25,6 +28,7 @@ namespace HotCatCafe.DAL.Context
         {
             builder.ApplyConfiguration(new CategoryConfiguration());
             builder.ApplyConfiguration(new ProductConfiguration());
+            builder.ApplyConfiguration(new AppUserConfiguration());
             base.OnModelCreating(builder);
         }
 
