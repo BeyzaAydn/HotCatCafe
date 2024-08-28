@@ -76,15 +76,30 @@ namespace HotCatCafe.BLL.Repositories.Concretes.EntitiyConcrete
             return lowStockProducts;
         }
 
+        /// <summary>
+        /// stok miktarı 10'un altıdan olan ürünleri listeler.
+        /// </summary>
+        /// <returns></returns>
+        public IEnumerable<Product> LowProductList()
+        {
+            // Tüm ürünleri alır
+            var allProducts = GetAllProducts();
+            int threshold = 10;
+            // Stok miktarı eşik değerinin altında olan ürünleri filtrele
+            var lowStockProducts = allProducts.Where(product => product.UnitInStock < threshold);
+           
+            return lowStockProducts;
+        }
+
         public async Task CheckProductStockAndNotifyAsync(IEnumerable<Product> lowStockProducts)
         {
            
             if (lowStockProducts != null)
             {
-                string subject = "Low Stock Alert";
+                string subject = "Düşen Stok Uyarısı";
                 foreach (var product in lowStockProducts)
                 {
-                    string body = $"The stock for product {product.ProductName} (ID: {product.ID}) is below 10. Current stock: {product.UnitInStock}";
+                    string body = $" (ProductName:{product.ProductName})-(ID: {product.ID}) ürününde stok miktarı asgari belirlenen rakam olan 10'un altına düşmüştür.Acilen tedarik işleminin başlatılması gerekmektedir.Güncel Stok: {product.UnitInStock}";
                     // Asenkron e-posta gönderimi
                      EmailSender.SendEmail("bkucuk.33@gmail.com", subject, body);
                 }

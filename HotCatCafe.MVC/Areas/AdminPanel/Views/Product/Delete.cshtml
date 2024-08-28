@@ -1,0 +1,15 @@
+﻿@model HotCatCafe.BLL.ViewModels.ProductViewModels.ProductViewModel
+@{
+    ViewData["Title"] = "Delete";
+    Layout = "~/Areas/AdminPanel/Views/Shared/_AdminPanelLayout.cshtml";
+}
+
+<form method="post">
+    <label asp-for="ProductName"></label>
+    <input type="text" asp-for="ProductName" />
+    <label asp-for="ProductId"></label>
+    <input type="number" asp-for="ProductId" />
+
+    <button type="submit">Sil</button>
+</form>
+

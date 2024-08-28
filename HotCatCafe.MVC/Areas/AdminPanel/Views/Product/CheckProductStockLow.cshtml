@@ -1,36 +1,22 @@
-﻿@model IEnumerable<HotCatCafe.BLL.ViewModels.ProductViewModels.ProductViewModel>
-@{
-    ViewData["Title"] = "CheckProductStockLow";
-    Layout = "~/Areas/AdminPanel/Views/Shared/_AdminPanelLayout.cshtml";
-}
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Mail Sent</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            padding: 0;
+        }
 
-<div class="container">
-    <h1>Low Stock Products</h1>
-
-    @if (Model != null && Model.Any())
-    {
-        <table class="table table-bordered">
-            <thead>
-                <tr>
-                    <th>Product Name</th>
-                    <th>Product ID</th>
-                    <th>Stock</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var product in Model)
-                {
-                    <tr>
-                        <td>@product.ProductName</td>
-                        <td>@product.ProductId</td>
-                        <td>@product.UnitInStock</td>
-                    </tr>
-                }
-            </tbody>
-        </table>
-    }
-    else
-    {
-        <p>No products found with low stock.</p>
-    }
-</div>
+        h3 {
+            color: #333;
+        }
+    </style>
+</head>
+<body>
+    <h3>Mail gönderildi.</h3>
+</body>
+</html>

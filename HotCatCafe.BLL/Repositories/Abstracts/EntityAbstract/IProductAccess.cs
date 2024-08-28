@@ -19,6 +19,7 @@ namespace HotCatCafe.BLL.Repositories.Abstracts.EntityAbstract
 
         IEnumerable<Product> GetPassiveProduct();
 
+        IEnumerable<Product> LowProductList();
 
         Task<IEnumerable<Product>> CheckProductStockLow();//stoğu 10 nin aşağısında olan ürünün yakalanması
         Task CheckProductStockAndNotifyAsync(IEnumerable<Product> lowstockProducts);//mail gönderilmesi

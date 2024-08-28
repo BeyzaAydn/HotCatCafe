@@ -11,7 +11,7 @@ namespace HotCatCafe.DAL.Configurations
         {
             //Properties
             builder.Property(x=>x.UserName).HasMaxLength(255);
-            builder.Property(x=>x.PasswordHash).HasMaxLength(25);
+            
 
             //HasData
             builder.HasData(SeedAppUserData());

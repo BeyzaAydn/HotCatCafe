@@ -1,0 +1,188 @@
+﻿@model HotCatCafe.BLL.ViewModels.ProductViewModels.ProductViewModel
+@{
+    ViewData["Title"] = "Update";
+    Layout = "~/Areas/AdminPanel/Views/Shared/_AdminPanelLayout.cshtml";
+}
+
+@* <form asp-action="Update" enctype="multipart/form-data">
+    <div class="form-group">
+        <label asp-for="ProductName" class="control-label"></label>
+        <input asp-for="ProductName" class="form-control" />
+        <span asp-validation-for="ProductName" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="UnitPrice" class="control-label"></label>
+        <input asp-for="UnitPrice" class="form-control" />
+        <span asp-validation-for="UnitPrice" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="UnitInStock" class="control-label"></label>
+        <input asp-for="UnitInStock" class="form-control" />
+        <span asp-validation-for="UnitInStock" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="CategoryId" class="control-label"></label>
+        <select asp-for="CategoryId" class="form-control" asp-items="ViewBag.CategoryListItem">
+            <option value="">Select a Category</option>
+        </select>
+        <span asp-validation-for="CategoryId" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Status" class="control-label"></label>
+        <input asp-for="Status" class="form-control" />
+        <span asp-validation-for="Status" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label>Product Image</label>
+        <input type="file" name="productImage" class="form-control" />
+    </div>
+
+    @if (!string.IsNullOrEmpty(Model.ImagePath))
+    {
+        <div class="form-group">
+            <label>Current Image</label>
+            <img src="@Url.Content("~/images/products/" + Model.ImagePath)" alt="Product Image" style="max-width: 200px;" />
+        </div>
+    }
+
+    <div class="form-group">
+        <button type="submit" class="btn btn-primary">Save</button>
+        <a asp-action="Index" class="btn btn-secondary">Cancel</a>
+    </div>
+</form> *@
+
+
+@* <section class="content">
+    <div class="container-fluid pt-2">
+        <div class="row">
+            <div class="col-md-6">
+                <div class="card card-primary">
+                    <div class="card-header bg-dark mb-3">
+                        <h3 class="card-title">Update @Model.ProductName</h3>
+                    </div>
+
+                    <form method="post">
+                        <div class="card-body">
+                            <div class="form-group">
+                                <label>New Product Name</label>
+                                <input type="text" class="form-control" asp-for="@Model.ProductName" placeholder="Enter New Product Name">
+                            </div>
+
+                            <div class="form-group">
+                                <label>New UnitPrice </label>
+                                <input type="number" class="form-control" asp-for="@Model.UnitPrice" placeholder="Enter New Product UnitPrice">
+                            </div>
+
+                            <div class="form-group">
+                                <label>UnitInStock </label>
+                                <input type="number" class="form-control" asp-for="@Model.UnitInStock">
+                            </div>
+
+                           <div class="form-group">
+                            <label>CategoryId </label>
+                            <input type="number" class="form-control" asp-for="@Model.CategoryId">
+                        </div>
+
+                            <div class="form-group">
+                                <label>Status </label>
+                                <input type="text" class="form-control" asp-for="@Model.Status">
+                            </div>
+
+                            <div class="form-group">
+                                <!--Burada kullanıcının seçim yapması için bir select list oluşturulmuştur.-->
+                                <select class="form-control" asp-items="@ViewBag.CategoryListItem" asp-for="CategoryId">
+                                    <option selected="" disabled>Select Category</option>
+                                </select>
+
+
+                            </div>
+
+                            <div class="form-group">
+                                <label>Images </label>
+                                <input class="form-control" type="file" name="productimage" />
+                            </div>
+
+
+
+
+
+
+                          
+
+                        </div>
+                        <div class="card-footer">
+                            <button type="submit" class="btn btn-dark">Update</button>
+                        </div>
+                    </form>
+
+                </div>
+                <div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section> *@
+
+
+<form method="post" enctype="multipart/form-data">
+    <div class="card-body">
+        <div class="form-group">
+            <label asp-for="ProductName">Ürün Ad</label>
+            <input type="text" class="form-control" asp-for="ProductName" placeholder="Ürün Adını Girin" />
+            <span asp-validation-for="ProductName" class="text-danger"></span>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="UnitPrice">Ürün Fiyat</label>
+            <input type="number" class="form-control" asp-for="UnitPrice" placeholder="Ürün Fiyatını Girin" />
+            <span asp-validation-for="UnitPrice" class="text-danger"></span>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="UnitInStock">Ürün Stok</label>
+            <input type="number" class="form-control" asp-for="UnitInStock" />
+            <span asp-validation-for="UnitInStock" class="text-danger"></span>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="CategoryId">Kategori</label>
+            <select class="form-control" asp-for="CategoryId" asp-items="ViewBag.CategoryListItem">
+                <option selected="" disabled>Kategori Seçin</option>
+            </select>
+            <span asp-validation-for="CategoryId" class="text-danger"></span>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="Status">Ürün Durumu</label>
+            <input type="text" class="form-control" asp-for="Status" />
+            <span asp-validation-for="Status" class="text-danger"></span>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="Active">Aktiflik Durumu</label>
+            <input type="text" class="form-control" asp-for="Active" />
+            <span asp-validation-for="Active" class="text-danger"></span>
+        </div>
+
+         <div class="form-group">
+           
+            <input class="form-control" type="file" name="productImage" />
+            <span asp-validation-for="ImagePath" class="text-danger"></span>
+        </div> 
+    </div>
+    <div class="card-footer">
+        <button type="submit" class="btn btn-dark">Güncelle</button>
+    </div>
+</form>
+
+
+
+
+
+
+

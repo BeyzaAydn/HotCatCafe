@@ -7,6 +7,7 @@ using HotCatCafe.BLL.Repositories.Abstracts.EntityAbstract;
 using HotCatCafe.BLL.Repositories.Concretes.EntitiyConcrete;
 using Microsoft.AspNetCore.Identity;
 using NETCore.MailKit.Core;
+using HotCatCafe.Model.Entities;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -25,6 +26,9 @@ builder.Services.AddScoped(typeof (IDataAccess<>), typeof (DataAccess<>));
 builder.Services.AddScoped<ICategoryAccess,CategoryAccess>();
 
 builder.Services.AddScoped<IProductAccess,ProductAccess>();
+
+//User Manager
+builder.Services.AddIdentity<AppUser,AppUserRole>().AddEntityFrameworkStores<HotCatCafeContext>().AddDefaultTokenProviders();
 
 
 
@@ -52,6 +56,11 @@ app.UseEndpoints(endpoints =>
     endpoints.MapControllerRoute(
       name: "areas",
       pattern: "{area:exists}/{controller=Home}/{action=Index}/{id?}"
+    );
+
+    endpoints.MapControllerRoute(
+      name: "activationUrl",
+    pattern: "{controller=Home}/{action=Activation}/{id}/{token}"
     );
 
 

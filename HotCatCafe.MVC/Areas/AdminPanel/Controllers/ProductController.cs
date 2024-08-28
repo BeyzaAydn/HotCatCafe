@@ -1,4 +1,5 @@
 ﻿using HotCatCafe.BLL.Repositories.Abstracts.EntityAbstract;
+using HotCatCafe.BLL.ViewModels;
 using HotCatCafe.BLL.ViewModels.CategoryViewModels;
 using HotCatCafe.BLL.ViewModels.ProductViewModels;
 using HotCatCafe.CMN.ImageHelpers;
@@ -105,61 +106,257 @@ namespace HotCatCafe.MVC.Areas.AdminPanel.Controllers
 
         }
 
-
+        
         [HttpGet]
         public async Task<IActionResult> CheckProductStockLow()
         {
             try
             {
-                // Ürünlerin stok seviyelerini kontrol et ve e-posta bildirimi gönder
+                // Ürünlerin stok seviyelerini kontrol eder ve e-posta bildirimi gönderir.
                 IEnumerable<Product> lowStockProducts = await _productAccess.CheckProductStockLow();
 
                 if (lowStockProducts == null || !lowStockProducts.Any())
                 {
                     // Eğer düşük stoklu ürün bulunamazsa, uygun bir mesajla döner
-                    ViewData["Message"] = "No products found with low stock.";
-                    return View("NoProducts"); // "NoProducts.cshtml" adında bir görünüm dosyası
+                    
+                    return View("NoLowStock"); 
                 }
 
-                // Düşük stoklu ürünleri View'e gönder
-                return View("LowStock", lowStockProducts); // "LowStock.cshtml" adında bir görünüm dosyası
+                
+                return View(); 
             }
             catch (Exception ex)
             {
                 // Hata durumunda uygun HTTP yanıtını döndürür
-                ViewData["ErrorMessage"] = $"Internal server error: {ex.Message}";
-                return View("Error"); // "Error.cshtml" adında bir görünüm dosyası
+               
+                return View("Error"); // 
             }
+
+            
         }
+        public  IActionResult LowProductList()
+        {
+            try
+            {
+                // Düşük stoklu ürünleri al
+                var lowStockProducts =  _productAccess.LowProductList().Select(x => new ProductViewModel
+                {
+                    ProductId = x.ID,
+                    ProductName = x.ProductName,
+                    UnitPrice = x.UnitPrice,
+                    UnitInStock = x.UnitInStock,
+                    CategoryId = x.CategoryId,
+                    Status = x.Status,
+                    ImagePath = x.ImagePath,
+                }).ToList();
+
+                
+
+                // Eğer düşük stoklu ürün bulunamazsa, uygun bir mesaj ile görünüm döndür
+                if (lowStockProducts == null || !lowStockProducts.Any())
+                {
+
+                    return View("NoLowStock"); // "NoLowStock.cshtml" adında bir görünüm dosyası döndürür
+                }
+
+                // Düşük stoklu ürünleri View'e gönder
+                return View(lowStockProducts);
+            }
+            catch (Exception ex)
+            {
+                // Hata durumunda uygun HTTP yanıtını döndürür
+               
+                return View("Error"); // "Error.cshtml" adında bir görünüm dosyası döndürür
+            }
+
+
+        }
+
+
+        //Ürün güncelleme
+        public async Task<IActionResult> Update(int id)
+        
+        
+        
+       {
+            var product = await _productAccess.GetProductByIdAsync(id);
+
+            if (product == null)
+            {
+                return RedirectToAction("Index", "Product");
+            }
+
+            ViewBag.CategoryListItem = _categoryAccess.GetAllCategories().Select(x => new CategoryViewModel
+            {
+                CategoryName = x.CategoryName,
+                Description = x.Description,
+                Id = x.ID,
+            }).Select(s => new SelectListItem
+            {
+                Text = s.CategoryName,
+                Value = s.Id.ToString()
+            });
+
+            ProductViewModel productViewModel = new ProductViewModel
+            {
+                ProductName = product.ProductName,
+                ProductId = product.ID,
+               UnitInStock= product.UnitInStock,
+               CategoryId = product.CategoryId,
+               Status = product.Status,
+               ImagePath = product.ImagePath,
+               UnitPrice= product.UnitPrice,
+            };
+
+            return View(productViewModel);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Update(ProductViewModel productViewModel, IFormFile productImage)
+        {
+            if (ModelState.IsValid)
+            {
+                var ImageEditResult = ImageHelper.UploadImage(productImage.FileName);
+
+                if (ImageEditResult == "0")
+                {
+                    TempData["Error"] = "Görsel izin verilen formatta değil";
+                    return View(productViewModel);
+                }
+                else
+                {
+                    var path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot\\images\\products", ImageEditResult);
+                    using (var stream = new FileStream(path, FileMode.Create))
+                    {
+                       await productImage.CopyToAsync(stream);
+                    }
+
+
+                    Product updated = new Product
+                    {
+
+                        ProductName = productViewModel.ProductName,
+                        UnitPrice = productViewModel.UnitPrice,
+                        UnitInStock = productViewModel.UnitInStock,
+                        CategoryId = productViewModel.CategoryId,
+                        Status = productViewModel.Status,
+                        ImagePath = ImageEditResult,
+                    };
+
+                    var result = await _productAccess.UpdateProductAsync(updated);
+
+                    return RedirectToAction("Index", "Category");
+                }
+            }
+            else
+            {
+                return View();
+            }
+
+        }
+
+
+        // HttpGet metodu: Silme işlemi için onay sayfasını gösterir.
+        [HttpGet]
+        public async Task<IActionResult> Delete(int id)
+        {
+            var product = await _productAccess.GetProductByIdAsync(id);
+            if (product == null)
+            {
+                return NotFound(); // Kategori bulunamazsa 404 döner.
+            }
+
+            var productViewModel = new ProductViewModel
+            {
+                ProductId = product.ID,
+                ProductName = product.ProductName,
+                
+            };
+
+            return View(productViewModel);
+        }
+
+        // HttpPost metodu: Silme işlemini gerçekleştirir.
+        [HttpPost, ActionName("Delete")]
+
+        public async Task<IActionResult> DeleteConfirmed(int id)
+        {
+            var product = await _productAccess.GetProductByIdAsync(id);
+            if (product == null)
+            {
+                return NotFound(); // Kategori bulunamazsa 404 döner.
+            }
+
+            try
+            {
+                var isDeleted = await _productAccess.DeleteProductAsync(product);
+                if (isDeleted)
+                {
+                    return RedirectToAction("Index");
+                }
+                else
+                {
+                    ModelState.AddModelError("", "Silme işlemi başarısız oldu. Lütfen tekrar deneyin.");
+                }
+            }
+            catch (Exception ex)
+            {
+                // Hata mesajını kullanıcıya göster.Bu metodun açıklamasına çalış..
+                ModelState.AddModelError("", $"Silme işlemi sırasında bir hata oluştu: {ex.Message}");
+            }
+
+            var productViewModel = new ProductViewModel
+            {
+                ProductId= product.ID,
+                ProductName = product.ProductName,
+                
+            };
+            return View(productViewModel); // Hata durumunda onay sayfasına geri döner.
+        }
+
+
+        // Active Ürünlerin listelenmesi
+        public IActionResult Active()
+        {
+            var products = _productAccess
+                .GetActiveProduct()
+                .OrderByDescending(x => x.CreatedDate)
+                .Select(x => new ProductViewModel
+                {
+                    ProductId = x.ID,
+                    ProductName = x.ProductName,
+                    UnitInStock = x.UnitInStock,
+                    UnitPrice = x.UnitPrice,
+                    Active = x.Active,
+                    Status = x.Status
+                }).ToList();
+            return View(products);
+        }
+
+        //List Passive Products
+        public IActionResult Passive()
+        {
+            var products = _productAccess
+                .GetPassiveProduct()
+                .OrderByDescending(x => x.CreatedDate)
+                .Select(x => new ProductViewModel
+                {
+                    ProductId = x.ID,
+                    ProductName = x.ProductName,
+                    UnitInStock = x.UnitInStock,
+                    UnitPrice = x.UnitPrice,
+                    Active = x.Active,
+                    Status = x.Status
+                }).ToList();
+            return View(products);
+        }
+
     }
 }
 
 
 
-    //[HttpGet]
-    //    public IActionResult CheckStock()
-    //    {
-    //        // Sadece bir form gösteren bir View döndürür
-    //        return View();
-    //    }
-
-    //    [HttpPost]
-    //    public async Task<IActionResult> CheckStockAndNotify(int productId)
-    //    {
-    //        try
-    //        {
-    //            await _productAccess.CheckProductStockAndNotifyAsync(productId);
-    //            return RedirectToAction("Index", new { message = "Stock check completed and notification sent if necessary." });
-    //        }
-    //        catch (Exception ex)
-    //        {
-    //            // Hata yönetimi
-    //            // Hata mesajını ViewBag ile iletin
-    //            ViewBag.ErrorMessage = $"Error: {ex.Message}";
-    //            return View("Error"); // "Error" view'ını gösterir
-    //        }
-    //    }
-
+    
     
 
 
